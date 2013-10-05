@@ -1,0 +1,308 @@
+<!doctype html>
+
+<html>
+  
+  <head>
+    <title>CDN Calculator</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootswatch/3.0.0/flatly/bootstrap.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      /* Space out content a bit */
+      body {
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+			#accordion	{margin-bottom: 4px;}
+.table {
+				position: relative;
+			}
+			
+      /* Make the masthead heading the same height as the navigation */
+      .header h3 {
+        margin-top: 0;
+        margin-bottom: 0;
+        line-height: 40px;
+        padding-bottom: 19px;
+      }
+      /* Custom page footer */
+      .footer {
+        padding-top: 19px;
+        color: #777;
+        border-top: 1px solid #e5e5e5;
+      }
+      /* Customize container */
+      @media(min-width: 768px) {
+        .container {
+          max-width: 730px;
+        }
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        text-align: center;
+        border-bottom: 1px solid #e5e5e5;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+      /* Supporting marketing content */
+      .marketing {
+        margin: 40px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+      /* Responsive: Portrait tablets and up */
+      @media screen and(min-width: 768px) {
+        /* Remove the padding we set earlier */
+        .header, .marketing, .footer {
+          padding-left: 0;
+          padding-right: 0;
+        }
+        /* Space out the masthead */
+        .header {
+          margin-bottom: 30px;
+        }
+        /* Remove the bottom border on the jumbotron for visual effect */
+        .jumbotron {
+          border-bottom: 0;
+        }
+      }
+			
+	  .centered {
+			float: none;
+			margin: 0 auto;
+		}
+		#traffic_info tr.success a {color: white}
+		#traffic_info td:last-child  {font-weight: bold;text-align: right}
+    </style>
+		<script src="jquery.tableSort.js" type="text/javascript" charset="utf-8"></script>
+		
+
+    <script type="text/javascript">
+			function show_cdn_plan_notes(cdn_name, plan_name, extra) {
+				$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(plan_name + ((extra > 0) ? (' + extra $' + extra + ' ') : ''));
+			}
+			function max_and_cachefly(trange, cdn_name) {
+				var traf = $("#traffic_volume").val();
+				var result = 0;
+				var last_excessPrice = 0;
+				$.each(trange, function(index) {
+					if (traf <= this.included) {
+						result = this.price;
+						$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name);
+						return false;
+					}
+					else {
+						$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name);
+						var traf_excess = traf - this.included;
+						var next_plan = trange[index+1];
+						if (typeof next_plan !== "undefined" 
+								&& traf < next_plan.included 
+								&& traf_excess * this.excessPrice + this.price < next_plan.price) {
+							result = traf_excess * this.excessPrice + this.price;
+							//$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ' + extra $' + Math.round(traf_excess * this.excessPrice) + ' ');
+							show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice));
+							return false;
+						}
+						else {
+							result = traf_excess * this.excessPrice + this.price;
+							show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)); /*
+							if (Math.round(traf_excess * this.excessPrice) > 0) {
+								$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ' + extra $' + Math.round(traf_excess * this.excessPrice) + ' ');
+							}*/
+						}
+					}
+					last_excessPrice = this.excessPrice;
+				});
+				result = result ? result : Math.round(traf * last_excessPrice);
+				$("#traffic_info tr:contains("+cdn_name+") td:last").html('$' + Math.round(result));
+			}
+			var 
+				plans = {
+					Cachefly: function () {
+						var trange = [ 
+							{name:'Plan 1', price:  99, included:  256, excessPrice: 0.37 },
+							{name:'Plan 2', price: 299, included: 1200, excessPrice: 0.25 }, 
+							{name:'Plan 3', price: 409, included: 2048, excessPrice: 0.20 } ];
+						
+						
+						max_and_cachefly(trange, "CacheFly");
+					},
+					MaxCDN: function () {
+						var trange = [ 
+							{name:'Plan 1', price:   9, included:   100, excessPrice: 0.08 },
+							{name:'Plan 2', price:  39, included:   500, excessPrice: 0.07 }, 
+							{name:'Plan 3', price:  79, included:  1000, excessPrice: 0.06 },
+							{name:'Plan 4', price: 499, included: 10000, excessPrice: 0.05 } ];
+						max_and_cachefly(trange, "MaxCDN");
+					},
+					MtProCDN: function () {
+						var traf = $("#traffic_volume").val();
+						var result = 0;
+						if (traf <= 200) {
+							result = 20;
+							
+						}
+						else if(traf <= 10240) {
+							result = 20 + (traf-200)*0.15;
+						}
+						else {
+							result = 20 + (traf-200)*0.10;
+						}
+						$("#traffic_info tr:contains(MtProCDN) td:last").html('$' + result);
+						show_cdn_plan_notes("MtProCDN","Default Plan");
+					},
+					KeyCDN: function () {
+						var traf = $("#traffic_volume").val();
+						var result = Math.round(traf * 0.04);
+						$("#traffic_info tr:contains(KeyCDN) td:last").html('$' + result);
+						show_cdn_plan_notes("KeyCDN","Default Plan");
+					}				
+				};
+			function recalculate() {
+				if ($('#traffic_info').find(':animated').length > 0) {
+					window.setTimeout(function () {recalculate();}, 10);	
+					return;
+				}
+				$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
+					if ( $("#traffic_volume").val() > 1) {
+						$.each(plans, function (){
+							this();
+						});
+						$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric'});
+						$('#traffic_info tbody tr:first').addClass('success');
+					}
+			}
+			$(document).ready( function(){
+				$("#traffic_volume").keyup(function(){
+					recalculate();
+				});
+			});
+		</script>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active">
+            <a href="#">Home</a>
+          </li>
+          <li>
+            <a href="#">About</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
+        <h3 class="text-muted">CDN Calculator</h3>
+      </div>
+      <div class="row">  	
+	  		<div class="col-md-2 centered"><input type="text" class="form-control" placeholder="500GB" id="traffic_volume"></div> 
+				 Just enter the bandwidth you use per month and find the best cheapest and best suited CDN for you.		
+			</div> 
+			<div class="row">
+				<div class="panel-group" id="accordion">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title">
+								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+									<span class="glyphicon glyphicon-cog"></span> Show Extra Options
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse ">
+							<div class="panel-body">
+								<form class="form-horizontal" role="form">
+									<div class="form-group">
+										<div class="form-group">
+											<label for="traffContinents" class="col-lg-4 control-label">Continents</label>
+											<div class="col-lg-8">
+												<label class="control-label"><input type="text" id="traffUS" value="50"> USA (North America)</label>
+												<label class="control-label"><input type="text" id="traffEU" value="40"> Europe	</label>
+												<label class="control-label"><input type="text" id="traffAU" value="0"> Australia, New Zealand</label>
+												<label class="control-label"><input type="text" id="traffAS" value="5"> Asia (China, Hong Kong, Korea, Singapore)	</label>
+												<label class="control-label"><input type="text" id="traffJP" value="0"> Japan	</label>
+												<label class="control-label"><input type="text" id="traffSA" value="5"> South America</label>
+												<label class="control-label"><input type="text" id="traffIN" value="0"> India </label>
+												<label class="control-label"><input type="text" id="traffAF" value="0"> Africa </label>
+											</div>
+											
+											<div id="slider" style="width: 270px"></div>
+											
+										</div>
+										<label for="inputHttpRequest" class="col-lg-4 control-label">Amount Of HTTP(s) Requests</label>
+										<div class="col-lg-5">
+											<input type="email" class="form-control" id="inputHttpRequest" placeholder="10000">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="traffProtocol" class="col-lg-4 control-label">HTTP Protocols</label>
+										<div class="col-lg-8">
+											<label class="checkbox-inline">
+												<input type="checkbox" id="traffProtocol" value="http"> http
+											</label>
+											<label class="checkbox-inline">
+												<input type="checkbox" id="traffProtocol" value="https"> https
+											</label>
+										</div>
+									</div>
+								</form>
+								
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="row">
+					<div class="table-responsive">
+					 <table class="table table-hover  table-bordered" id="traffic_info">
+						<thead>
+							<tr>
+								<th class="hidden-xs" width="120">CDN</th>
+								<th width="120">Name</th>
+								<th  width="50" onclick="$('#traffic_info').sortTable({onCol: 3, keepRelationships: true})">POPs</th>
+								<th>Notes</th>
+								<th  width="80" onclick="$('#traffic_info').sortTable({onCol: 5, keepRelationships: true})">Price/Month</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="hidden-xs"><center><a target="_blank" href="http://www.maxcdn.com"><img src="img/maxcdn.png"/></a></center></td>
+								<td><a target="_blank" href="http://www.maxcdn.com">MaxCDN</a></td>
+								<td>13</td>
+								<td>Note</td>
+								<td>$500</td>
+							</tr>
+							<tr>
+								<td class="hidden-xs"><center><a target="_blank" href="http://www.maxcdn.com"><img src="img/cachefly.png"/></a></center></td>
+								<td><a target="_blank" href="http://www.cachefly.com">CacheFly</a></td>
+								<td>34</td>
+								<td>Note</td>
+								<td>$500</td>
+							</tr>
+							<tr>
+								<td class="hidden-xs"><center><a target="_blank" href="http://www.maxcdn.com"><img src="img/keycdn.png"/></a></center></td>
+								<td><a target="_blank" href="http://www.keycdn.com">KeyCDN</a></td>
+								<td>15</td>
+								<td>Note</td>
+								<td>$500</td>
+							</tr>
+						</tbody>
+					</table>
+        </div>
+      </div>
+      <div class="footer">
+        <p>&copy; Find the cheapest CDN - CDNCalc 2013</p>
+      </div>
+    </div>
+    <!-- /container -->
+  </body>
+</html>
