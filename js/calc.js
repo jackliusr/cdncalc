@@ -107,6 +107,19 @@ var
 				if ($('#traff'+this.name).val() == '') $('#traff'+this.name).val(0);
 				total += parseInt($('#traff'+this.name).val());
 			});
+			if (total != 100) {
+				$.each(continents, function () {
+										$('#traff'+this.name).parent().removeClass('has-success');
+
+					$('#traff'+this.name).parent().addClass('has-error');
+				});
+			}
+			else {
+				$.each(continents, function () {
+					$('#traff'+this.name).parent().removeClass('has-error');
+					$('#traff'+this.name).parent().addClass('has-success');
+				});
+			}
 			var note = '', us_cost=0, as_cost=0;
 			$.each(continents, function () {
 				result += traf * ($('#traff'+this.name).val()) * this.price / total;
@@ -140,10 +153,7 @@ function recalculate() {
 	}
 }
 $(document).ready( function(){
-	/*$("#traffic_volume").keypress(function(){
-		recalculate();
-	});*/
-		$("input").keyup(function(){
+	$("input").keyup(function(){
 		recalculate();
 	});
 	$("input").change(function(){
