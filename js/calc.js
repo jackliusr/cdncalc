@@ -19,16 +19,12 @@ function max_and_cachefly(trange, cdn_name) {
 					&& traf < next_plan.included 
 					&& traf_excess * this.excessPrice + this.price < next_plan.price) {
 				result = traf_excess * this.excessPrice + this.price;
-				//$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ' + extra $' + Math.round(traf_excess * this.excessPrice) + ' ');
 				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice));
 				return false;
 			}
 			else {
 				result = traf_excess * this.excessPrice + this.price;
-				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)); /*
-				if (Math.round(traf_excess * this.excessPrice) > 0) {
-					$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ' + extra $' + Math.round(traf_excess * this.excessPrice) + ' ');
-				}*/
+				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)); 
 			}
 		}
 		last_excessPrice = this.excessPrice;
@@ -43,8 +39,6 @@ var
 				{name:'Plan 1', price:  99, included:  256, excessPrice: 0.37 },
 				{name:'Plan 2', price: 299, included: 1200, excessPrice: 0.25 }, 
 				{name:'Plan 3', price: 409, included: 2048, excessPrice: 0.20 } ];
-			
-			
 			max_and_cachefly(trange, "CacheFly");
 		},
 		MaxCDN: function () {
@@ -60,7 +54,6 @@ var
 			var result = 0;
 			if (traf <= 200) {
 				result = 20;
-				
 			}
 			else if(traf <= 10240) {
 				result = 20 + (traf-200)*0.15;
@@ -84,13 +77,13 @@ function recalculate() {
 		return;
 	}
 	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
-		if ( $("#traffic_volume").val() > 1) {
-			$.each(plans, function (){
-				this();
-			});
-			$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric'});
-			$('#traffic_info tbody tr:first').addClass('success');
-		}
+	if ( $("#traffic_volume").val() > 1) {
+		$.each(plans, function (){
+			this();
+		});
+		$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric'});
+		$('#traffic_info tbody tr:first').addClass('success');
+	}
 }
 $(document).ready( function(){
 	$("#traffic_volume").keyup(function(){
