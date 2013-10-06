@@ -61,8 +61,9 @@ var
 			else {
 				result = 20 + (traf-200)*0.10;
 			}
-			$("#traffic_info tr:contains(MtProCDN) td:last").html('$' + result);
-			show_cdn_plan_notes("MtProCDN","Default Plan");
+			result = Math.round(result);
+			$("#traffic_info tr:contains(ProCDN) td:last").html('$' + result);
+			show_cdn_plan_notes("ProCDN","Default Plan");
 		},
 		KeyCDN: function () {
 			var traf = $("#traffic_volume").val();
