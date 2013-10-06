@@ -99,20 +99,21 @@ var
 		
 		GoGridCDN: function () {
 			var traf = $("#traffic_volume").val();
-			var result = 0; // Math.ceil(  ($("#traffProtocolHTTP:checked").val() ? (traf * 0.12) : 0) +  ($("#traffProtocolHTTPS:checked").val() ? (traf * 0.15) : 0) );
+			var result = 0; 
 			var total = 0;
 			var continents = [ {name:'US',price:0.3},{name:'SA',price:0.3},{name:'EU',price:0.3},{name:'AU',price:0.8},{name:'AS',price:0.8} ];
 			$.each(continents, function () {
 				$('#traff'+this.name).val($('#traff'+this.name).val().replace(/\D+/g,''));
 				total += parseInt($('#traff'+this.name).val());
 			});
-			var note = '';
+			var note = '', us_cost=0, as_cost=0;
 			$.each(continents, function () {
-				
 				result += traf * ($('#traff'+this.name).val()) * this.price / total;
-				note += continents_codes[this.name] + ' - $'+ Math.ceil(traf * this.price * $('#traff'+this.name).val() / total)+ '<br>';
+				if ($.inArray(this.name, ['US','SA','EU'])) us_cost += traf * ($('#traff'+this.name).val()) * this.price / total;
+				if ($.inArray(this.name, ['AS','AU'])) as_cost += traf * ($('#traff'+this.name).val()) * this.price / total;
 			});
-			
+			note += 'Global $' + Math.ceil(us_cost) + '<br>';
+			note += 'Asia+Australia $' + Math.ceil(as_cost);
 			result = Math.ceil(result);
 			$("#traffic_info tr:contains(GoGrid) td:last").html('$' + result);
 			show_cdn_plan_notes("GoGrid",note);
@@ -133,12 +134,11 @@ function recalculate() {
 	}
 }
 $(document).ready( function(){
-	$("#traffic_volume").keyup(function(){
+	$("#traffic_volume").keypress(function(){
 		recalculate();
 	});
-	recalculate();
-	
 	$("input").change(function(){
 		recalculate();
 	});
+		recalculate();
 });
