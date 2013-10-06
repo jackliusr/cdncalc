@@ -93,4 +93,5 @@ $(document).ready( function(){
 	$("#traffic_volume").keyup(function(){
 		recalculate();
 	});
+	recalculate();
 });

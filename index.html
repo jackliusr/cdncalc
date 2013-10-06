@@ -36,26 +36,55 @@
 								</a>
 							</h4>
 						</div>
-						<div id="collapseOne" class="panel-collapse collapse ">
+						<div id="collapseOne" class="panel-collapse collapse in">
 							<div class="panel-body">
 								<form class="form-horizontal" role="form">
 									<div class="form-group">
-										<div class="form-group">
+										<div class="row">
 											<label for="traffContinents" class="col-lg-4 control-label">Continents</label>
-											<div class="col-lg-8">
-												<label class="control-label"><input type="text" id="traffUS" value="50"> USA (North America)</label>
-												<label class="control-label"><input type="text" id="traffEU" value="40"> Europe	</label>
-												<label class="control-label"><input type="text" id="traffAU" value="0"> Australia, New Zealand</label>
-												<label class="control-label"><input type="text" id="traffAS" value="5"> Asia (China, Hong Kong, Korea, Singapore)	</label>
-												<label class="control-label"><input type="text" id="traffJP" value="0"> Japan	</label>
-												<label class="control-label"><input type="text" id="traffSA" value="5"> South America</label>
-												<label class="control-label"><input type="text" id="traffIN" value="0"> India </label>
-												<label class="control-label"><input type="text" id="traffAF" value="0"> Africa </label>
+											<div class="col-lg-5">
+												<div class="form-group">
+													<label class="control-label col-lg-8 " for="traffUS"> USA (North America) </label>
+													<div class="col-lg-4">
+														<input type="text" id="traffUS" value="50" class="form-control">
+													</div>
+												</div>
+													
+												<div class="form-group">
+													<label class="control-label col-lg-8 " for="traffEU"> Europe </label>
+													<div class="col-lg-4">
+														<input type="text" id="traffEU" value="40" class="form-control">
+													</div>
+												</div>	
+													
+												<div class="form-group">
+													<label class="control-label col-lg-8 " for="traffAU"> Australia, New Zealand </label>
+													<div class="col-lg-4">
+														<input type="text" id="traffAU" value="0" class="form-control">
+													</div>
+												</div>	
+												<div class="form-group">
+													<label class="control-label col-lg-8 " for="traffAS"> Asia  </label>
+													<div class="col-lg-4">
+														<input type="text" id="traffAS" value="5" class="form-control">
+													</div>
+												</div>	
+												<div class="form-group">
+													<label class="control-label col-lg-8 " for="traffSA"> South America </label>
+													<div class="col-lg-4">
+														<input type="text" id="traffSA" value="5" class="form-control">
+													</div>
+												</div>	
+											
+																									
+												
+												
 											</div>
 											
-											<div id="slider" style="width: 270px"></div>
+											</div>
+									</div>
 											
-										</div>
+									<div class="form-group">	
 										<label for="inputHttpRequest" class="col-lg-4 control-label">Amount Of HTTP(s) Requests</label>
 										<div class="col-lg-5">
 											<input type="email" class="form-control" id="inputHttpRequest" placeholder="10000">
@@ -65,10 +94,10 @@
 										<label for="traffProtocol" class="col-lg-4 control-label">HTTP Protocols</label>
 										<div class="col-lg-8">
 											<label class="checkbox-inline">
-												<input type="checkbox" id="traffProtocol" value="http"> http
+												<input type="checkbox" id="traffProtocol" value="http" checked> HTTP
 											</label>
 											<label class="checkbox-inline">
-												<input type="checkbox" id="traffProtocol" value="https"> https
+												<input type="checkbox" id="traffProtocol" value="https"> HTTPS
 											</label>
 										</div>
 									</div>
