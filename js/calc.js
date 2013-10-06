@@ -109,8 +109,7 @@ var
 			});
 			if (total != 100) {
 				$.each(continents, function () {
-										$('#traff'+this.name).parent().removeClass('has-success');
-
+					$('#traff'+this.name).parent().removeClass('has-success');
 					$('#traff'+this.name).parent().addClass('has-error');
 				});
 			}
