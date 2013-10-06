@@ -54,20 +54,23 @@ var
 			var result = 0;
 			if (traf <= 200) {
 				result = 20;
+				show_cdn_plan_notes("ProCDN","Default Plan");
 			}
 			else if(traf <= 10240) {
 				result = 20 + (traf-200)*0.15;
+				show_cdn_plan_notes("ProCDN","Default Plan",Math.round((traf-200)*0.15));
+
 			}
 			else {
 				result = 20 + (traf-200)*0.10;
+				show_cdn_plan_notes("ProCDN","Default Plan",Math.round((traf-200)*0.15));
 			}
 			result = Math.round(result);
 			$("#traffic_info tr:contains(ProCDN) td:last").html('$' + result);
-			show_cdn_plan_notes("ProCDN","Default Plan");
 		},
 		KeyCDN: function () {
 			var traf = $("#traffic_volume").val();
-			var result = Math.round(traf * 0.04);
+			var result = Math.ceil(traf * 0.04);
 			$("#traffic_info tr:contains(KeyCDN) td:last").html('$' + result);
 			show_cdn_plan_notes("KeyCDN","Default Plan");
 		}				
