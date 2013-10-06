@@ -33,6 +33,8 @@ function max_and_cachefly(trange, cdn_name) {
 	$("#traffic_info tr:contains("+cdn_name+") td:last").html('$' + Math.round(result));
 }
 var 
+	continents_codes = {'US':'The United States','SA':'South America','EU':'Europe','AU':'Australia','AS':'Asia','AF':'Africa'};
+var 
 	plans = {
 		Cachefly: function () {
 			var trange = [ 
@@ -91,20 +93,29 @@ var
 		SoftlayerCDN: function () {
 			var traf = $("#traffic_volume").val();
 			var result = Math.ceil(  ($("#traffProtocolHTTP:checked").val() ? (traf * 0.12) : 0) +  ($("#traffProtocolHTTPS:checked").val() ? (traf * 0.15) : 0) );
-			$("#traffic_info tr:contains(Softlayer) td:last").html('$' + result);
-			show_cdn_plan_notes("Softlayer","Origin Pull Solution");
+			$("#traffic_info tr:contains(Layer) td:last").html('$' + result);
+			show_cdn_plan_notes("Layer","Origin Pull Solution");
 		},
 		
 		GoGridCDN: function () {
 			var traf = $("#traffic_volume").val();
 			var result = 0; // Math.ceil(  ($("#traffProtocolHTTP:checked").val() ? (traf * 0.12) : 0) +  ($("#traffProtocolHTTPS:checked").val() ? (traf * 0.15) : 0) );
 			var total = 0;
-			$("#traffUS, #traffEU, #traffAU, #traffAS, #traffSA").each(function () {
-				total += parseInt(this.value);
+			var continents = [ {name:'US',price:0.3},{name:'SA',price:0.3},{name:'EU',price:0.3},{name:'AU',price:0.8},{name:'AS',price:0.8} ];
+			$.each(continents, function () {
+				$('#traff'+this.name).val($('#traff'+this.name).val().replace(/\D+/g,''));
+				total += parseInt($('#traff'+this.name).val());
 			});
-			console.log(total);
-			$("#traffic_info tr:contains(GoGrid) td:last").html('$' + result);7
-			show_cdn_plan_notes("GoGrid","");
+			var note = '';
+			$.each(continents, function () {
+				
+				result += traf * ($('#traff'+this.name).val()) * this.price / total;
+				note += continents_codes[this.name] + ' - $'+ Math.ceil(traf * this.price * $('#traff'+this.name).val() / total)+ '<br>';
+			});
+			
+			result = Math.ceil(result);
+			$("#traffic_info tr:contains(GoGrid) td:last").html('$' + result);
+			show_cdn_plan_notes("GoGrid",note);
 		},
 	};
 function recalculate() {
