@@ -120,12 +120,13 @@ var
 		},
 	};
 function recalculate() {
+	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
+
 	if ($('#traffic_info').find(':animated').length > 0) {
-		window.setTimeout(function () {recalculate();}, 10);	
+		var to = window.setTimeout(function () {recalculate();}, 10);	
 		return;
 	}
-	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
-	if ( $("#traffic_volume").val() > 1) {
+	if ( $("#traffic_volume").val() >= 0) {
 		$.each(plans, function (){
 			this();
 		});
@@ -134,7 +135,10 @@ function recalculate() {
 	}
 }
 $(document).ready( function(){
-	$("#traffic_volume").keypress(function(){
+	/*$("#traffic_volume").keypress(function(){
+		recalculate();
+	});*/
+		$("#traffic_volume").keyup(function(){
 		recalculate();
 	});
 	$("input").change(function(){
