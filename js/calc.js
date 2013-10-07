@@ -32,6 +32,29 @@ function max_and_cachefly(trange, cdn_name) {
 	result = result ? result : Math.round(traf * last_excessPrice);
 	$("#traffic_info tr:contains("+cdn_name+") td:last").html('$' + Math.round(result));
 }
+
+function calculate_total() {
+	var total = 0;
+	var continents = [ {name:'US'},{name:'SA'},{name:'EU'},{name:'AU'},{name:'AS'},{name:'AF'}];
+			$.each(continents, function () {
+				$('#traff'+this.name).val($('#traff'+this.name).val().replace(/\D+/g,''));
+				if ($('#traff'+this.name).val() == '') $('#traff'+this.name).val(0);
+				total += parseInt($('#traff'+this.name).val());
+			});
+			if (total != 100) {
+				$.each(continents, function () {
+					$('#traff'+this.name).parent().removeClass('has-success');
+					$('#traff'+this.name).parent().addClass('has-error');
+				});
+			}
+			else {
+				$.each(continents, function () {
+					$('#traff'+this.name).parent().removeClass('has-error');
+					$('#traff'+this.name).parent().addClass('has-success');
+				});
+			}
+	return total;		
+}
 var 
 	continents_codes = {'US':'The United States','SA':'South America','EU':'Europe','AU':'Australia','AS':'Asia','AF':'Africa'};
 var 
@@ -101,24 +124,9 @@ var
 			var traf = $("#traffic_volume").val();
 			var result = 0; 
 			var total = 0;
+			total = calculate_total();
 			var continents = [ {name:'US',price:0.3},{name:'SA',price:0.3},{name:'EU',price:0.3},{name:'AU',price:0.8},{name:'AS',price:0.8} ];
-			$.each(continents, function () {
-				$('#traff'+this.name).val($('#traff'+this.name).val().replace(/\D+/g,''));
-				if ($('#traff'+this.name).val() == '') $('#traff'+this.name).val(0);
-				total += parseInt($('#traff'+this.name).val());
-			});
-			if (total != 100) {
-				$.each(continents, function () {
-					$('#traff'+this.name).parent().removeClass('has-success');
-					$('#traff'+this.name).parent().addClass('has-error');
-				});
-			}
-			else {
-				$.each(continents, function () {
-					$('#traff'+this.name).parent().removeClass('has-error');
-					$('#traff'+this.name).parent().addClass('has-success');
-				});
-			}
+			
 			var note = '', us_cost=0, as_cost=0;
 			$.each(continents, function () {
 				result += traf * ($('#traff'+this.name).val()) * this.price / total;
@@ -135,6 +143,40 @@ var
 			$("#traffic_info tr:contains(GoGrid) td:last").html('$' + result);
 			show_cdn_plan_notes("GoGrid",note);
 		},
+		CDN77: function () {
+			var traf = $("#traffic_volume").val();
+			var result = 0; 
+			var  note = '', total = 0;
+			total = calculate_total();
+			var matrix = [
+				{traffic:   30000, prices: [{continents: ['US','EU'], price: 0.049}, {continents: ['AS','AF'], price: 0.125}, {continents: ['SA'], price: 0.185}]},
+				{traffic:  100000, prices: [{continents: ['US','EU'], price: 0.045}, {continents: ['AS','AF'], price: 0.120}, {continents: ['SA'], price: 0.160}]},
+				{traffic:  400000, prices: [{continents: ['US','EU'], price: 0.030}, {continents: ['AS','AF'], price: 0.100}, {continents: ['SA'], price: 0.135}]},
+				{traffic: 1000000, prices: [{continents: ['US','EU'], price: 0.025}, {continents: ['AS','AF'], price: 0.085}, {continents: ['SA'], price: 0.110}]},
+				{traffic:      -1, prices: [{continents: ['US','EU'], price: 0.019}, {continents: ['AS','AF'], price: 0.070}, {continents: ['SA'], price: 0.095}]},
+			];
+			
+			$.each(matrix, function (index) {
+				if (traf <= this.traffic || index == matrix.length-1) {
+					$.each(this.prices, function (){
+						var cprice = this.price;
+						var group_money = 0;
+						var group_note = '';
+						$.each(this.continents, function (){
+							result += traf * ($('#traff'+this ).val()) * cprice / total;
+							group_money += traf * ($('#traff'+this ).val()) * cprice / total;
+							group_note += continents_codes[this] + ', ';  
+						});
+						note += group_note + ' - $' + Math.ceil(group_money) + '<br>';
+					});
+					return false;
+				}
+				
+			});
+			show_cdn_plan_notes("CDN77",note);
+			result = Math.ceil(result);
+			$("#traffic_info tr:contains(CDN77) td:last").html('$' + result);
+		}
 	};
 function recalculate() {
 	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
