@@ -162,11 +162,13 @@ var
 						var cprice = this.price;
 						var group_money = 0;
 						var group_note = '';
-						$.each(this.continents, function (){
+						var this_continents = this.continents;
+						$.each(this.continents, function (ci){
 							result += traf * ($('#traff'+this ).val()) * cprice / total;
 							group_money += traf * ($('#traff'+this ).val()) * cprice / total;
-							group_note += continents_codes[this] + ', ';  
+							group_note += continents_codes[this] + ((ci < this_continents.length - 1) ? ', ':'');  
 						});
+						if(group_money > 0)
 						note += group_note + ' - $' + Math.ceil(group_money) + '<br>';
 					});
 					return false;
