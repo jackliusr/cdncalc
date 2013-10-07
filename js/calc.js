@@ -56,7 +56,7 @@ function calculate_total() {
 	return total;		
 }
 var 
-	continents_codes = {'US':'The United States','SA':'South America','EU':'Europe','AU':'Australia','AS':'Asia','AF':'Africa'};
+	continents_codes = {'US':'USA','SA':'South America','EU':'Europe','AU':'Australia','AS':'Asia','AF':'Africa'};
 var 
 	plans = {
 		Cachefly: function () {
