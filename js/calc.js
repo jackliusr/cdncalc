@@ -178,7 +178,68 @@ var
 			show_cdn_plan_notes("CDN77",note);
 			result = Math.ceil(result);
 			$("#traffic_info tr:contains(CDN77) td:last").html('$' + result);
-		}
+		},
+		Fastly: function () {
+			var traf = $("#traffic_volume").val();
+			var reqs = $("#inputHttpRequest").val();
+			var result = 0; 
+			var  note = '', total = 0;
+			total = calculate_total();
+			var matrix = [
+		{traffic:   10000, prices:[{continents: ['US','EU'],price: 0.12},{continents:['AU'],price: 0.19}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:   40000, prices:[{continents: ['US','EU'],price: 0.08},{continents:['AU'],price: 0.14}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  100000, prices:[{continents: ['US','EU'],price: 0.06},{continents:['AU'],price: 0.12}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  350000, prices:[{continents: ['US','EU'],price: 0.04},{continents:['AU'],price: 0.10}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  500000, prices:[{continents: ['US','EU'],price: 0.03},{continents:['AU'],price:0.095}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic: 4000000, prices:[{continents: ['US','EU'],price:0.025},{continents:['AU'],price: 0.09}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:      -1, prices:[{continents: ['US','EU'],price: 0.02},{continents:['AU'],price:0.085}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+			];
+			
+			$.each(matrix, function (index) {
+				if (traf <= this.traffic || index == matrix.length-1) {
+					$.each(this.prices, function (){
+						var cprice = this.price;
+						var group_money = 0;
+						var group_note = '';
+						var this_continents = this.continents;
+						$.each(this.continents, function (ci){
+							result += traf * ($('#traff'+this ).val()) * cprice / total ;
+							group_money += traf * ($('#traff'+this ).val()) * cprice / total ;
+							group_note += continents_codes[this] + ((ci < this_continents.length - 1) ? ', ':'');  
+						});
+						if(group_money > 0)
+						note += group_note + ' - $' + Math.ceil(group_money) + '<br>';
+					});
+					$.each(this.requests, function (){
+						var cprice = this.price;
+						var cprice_s = this.price_s;
+						$.each(this.continents, function (ci){
+							result += ($("#traffProtocolHTTP:checked").val() ? (reqs*($('#traff'+this).val())*cprice/total):0) + ($("#traffProtocolHTTPS:checked").val() ? (reqs*($('#traff'+this).val())*cprice_s/total) : 0);
+						});
+					});
+					return false;
+				}
+			});
+			show_cdn_plan_notes("Fastly",note);
+			result = Math.ceil(result);
+			$("#traffic_info tr:contains(Fastly) td:last").html('$' + result);
+		},
+		
+		OneHundredTBCDN: function () {
+			var traf = $("#traffic_volume").val();
+			var result = 0;
+			var note = '';
+			var rest100 = traf % 100000;
+			result += Math.floor( traf / 100000 ) * 2500;
+			var rest10 = rest100 % 10000;
+			result += Math.floor( rest100 / 10000 ) * 500;
+			result += Math.ceil( rest10 / 1000 ) * 75;
+			result = Math.ceil(result);
+			$("#traffic_info tr:contains(100TB) td:last").html('$' + result);
+			show_cdn_plan_notes("100TB","Default Plan");
+		},
+		
+		
 	};
 function recalculate() {
 	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
