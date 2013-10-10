@@ -208,4 +208,7 @@ jQuery.fn.tableSort_cleanUp = function() {
 	$(this).find('td[newHTML]').attr('newHTML', '');
 	$(this).find('td[toTD]').attr('toTD', '');
 	
+	
+	highlight_cheapest();
+		highlight_recommended();
 };

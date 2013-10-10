@@ -293,6 +293,31 @@ var
 		
 		
 	};
+if (!Array.min) { Array.min = function( array ){return Math.min.apply( Math, array )} };	
+function highlight_cheapest() {
+	$('#traffic_info tbody tr.success').removeClass('success');
+	var mins = new Array();
+	 $('#traffic_info tbody tr td:nth-child(5)').each(function (i){
+	 	
+	 	mins[i] = $(this).text().replace(/\$/,'');
+	
+	 });
+	var minValue = Array.min(mins );
+	
+	$('#traffic_info tbody tr td:nth-child(5):contains(\'$'+minValue+'\')').each(function (i){
+		if ($(this).text() == ('$'+minValue)) {
+			$(this).parent().addClass('success');
+		}
+	
+	});
+	
+	
+}	
+function highlight_recommended() {
+	$('#traffic_info tr').removeClass('warning');
+	$('#traffic_info tr:contains(MaxCDN)').addClass('warning');
+}	
+
 function recalculate() {
 	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
 
@@ -305,7 +330,7 @@ function recalculate() {
 			this();
 		});
 		$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric'});
-		$('#traffic_info tbody tr:first').addClass('success');
+		//sort_price = false;
 	}
 }
 $(document).ready( function(){
@@ -318,3 +343,6 @@ $(document).ready( function(){
 		recalculate();
 	
 });
+
+var sort_pops = false;
+var sort_price = false;

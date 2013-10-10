@@ -48,6 +48,7 @@
 			margin: 0 auto;
 		}
 		#traffic_info tr.success a {color: white}
+		#traffic_info tr.warning a {color: white}
 		#traffic_info td:last-child  {font-weight: bold;text-align: right;font-size: 20px;}
 .calc-head h2{float: left;}
 #traffic_volume{font-size: 28px; font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1; height:46px;}

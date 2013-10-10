@@ -113,9 +113,9 @@
 							<tr>
 								<th class="hidden-xs" width="120">CDN</th>
 								<th width="120">Name</th>
-								<th  width="50" onclick="$('#traffic_info').sortTable({onCol: 3, keepRelationships: true, sortType: 'numeric'})">POPs</th>
+								<th  width="50" onclick="$('#traffic_info').sortTable({onCol: 3, keepRelationships: true, sortType: 'numeric', sortDesc: (sort_pops = !sort_pops) })">POPs</th>
 								<th>Pricing Notes</th>
-								<th  width="80" onclick="$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric'})">Price/Month</th>
+								<th  width="80" onclick="sort_price = !sort_price;$('#traffic_info').sortTable({onCol: 5, keepRelationships: true, sortType: 'numeric', sortDesc: sort_price})">Price/Month</th>
 							</tr>
 						</thead>
 						<tbody>
