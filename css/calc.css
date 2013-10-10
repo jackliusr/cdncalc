@@ -50,6 +50,8 @@
 		#traffic_info tr.success a {color: white}
 		#traffic_info tr.warning a {color: white}
 		#traffic_info td:last-child  {font-weight: bold;text-align: right;font-size: 20px;}
+		#traffic_info #recommended  {display: inline-block;background-color: rgba(0,0,0,0.3);padding: 0px 3px;border-radius: 3px;}
+		#traffic_info #coupon  {font-weight: bold;background-color: rgba(255,20,0,0.9);padding: 0px 3px;border-radius: 3px;}
 .calc-head h2{float: left;}
 #traffic_volume{font-size: 28px; font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1; height:46px;}
 .panel{border-top:0px none !important; border-bottom:0px none !important;}

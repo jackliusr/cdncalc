@@ -10,29 +10,30 @@ function max_and_cachefly(trange, cdn_name) {
 	var traf = $("#traffic_volume").val();
 	var result = 0;
 	var last_excessPrice = 0;
+	var recomm_html = ' <span id="recommended">Recommended!</span> <span id="coupon">discount -20%</span>';
 	$.each(trange, function(index) {
 		if (traf <= this.included) {
-			result = this.price;
-			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '') );
+			result = this.price * 0.8;
+			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? recomm_html : '') );
 			return false;
 		}
 		else {
-			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : ''));
+			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ?recomm_html : ''));
 			var traf_excess = traf - this.included;
 			var next_plan = trange[index+1];
 			if (typeof next_plan !== "undefined" 
 					&& traf < next_plan.included 
 					&& traf_excess * this.excessPrice + this.price < next_plan.price) {
-				result = traf_excess * this.excessPrice + this.price;
+				result = traf_excess * this.excessPrice + this.price * 0.8;
 				 
 				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice) 
-					, (cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '' );
+					, (cdn_name == 'MaxCDN') ? recomm_html : '' );
 				return false;
 			}
 			else {
 				result = traf_excess * this.excessPrice + this.price;
 				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)
-				, (cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '' ); 
+				, (cdn_name == 'MaxCDN') ? recomm_html : '' ); 
 			}
 		}
 		last_excessPrice = this.excessPrice;
