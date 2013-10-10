@@ -178,7 +178,7 @@ jQuery.fn.sortTable = function(params) {
 		
 		var animateOn = params.keepRelationships ? currTD.add(currTD.siblings()) : currTD;
 		var done = 0;
-		animateOn.children('div').animate({top: moveBy_top}, !params.noAnim ? 500 : 0, null, function() {
+		animateOn.children('div').animate({top: moveBy_top}, !params.noAnim ? 300 : 0, null, function() {
 			if ($(this).parent().is('.sortOnThisCol') || !params.keepRelationships) {
 				done++;
 				if (done == valuesToSort.length-1) thiss.tableSort_cleanUp();
@@ -210,5 +210,5 @@ jQuery.fn.tableSort_cleanUp = function() {
 	
 	
 	highlight_cheapest();
-		highlight_recommended();
+	highlight_recommended();
 };
