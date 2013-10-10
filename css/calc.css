@@ -53,3 +53,4 @@
 .calc-head h2{float: left;}
 #traffic_volume{font-size: 28px; font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight: 500;line-height: 1.1; height:46px;}
 .panel{border-top:0px none !important; border-bottom:0px none !important;}
+#max{background-color: #fff;padding: 4px;border-radius: 3px;}
