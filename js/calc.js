@@ -2,8 +2,9 @@
 var sort_pops = false;
 var sort_price = false;
 
-function show_cdn_plan_notes(cdn_name, plan_name, extra) {
-	$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(plan_name + ((extra > 0) ? (' + extra $' + extra + ' ') : ''));
+function show_cdn_plan_notes(cdn_name, plan_name, extra, lastline = '') {
+	
+	$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(plan_name + ((extra > 0) ? (' + extra $' + extra + ' ') : '') + lastline);
 }
 function max_and_cachefly(trange, cdn_name) {
 	var traf = $("#traffic_volume").val();
@@ -12,23 +13,26 @@ function max_and_cachefly(trange, cdn_name) {
 	$.each(trange, function(index) {
 		if (traf <= this.included) {
 			result = this.price;
-			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name);
+			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '') );
 			return false;
 		}
 		else {
-			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name);
+			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : ''));
 			var traf_excess = traf - this.included;
 			var next_plan = trange[index+1];
 			if (typeof next_plan !== "undefined" 
 					&& traf < next_plan.included 
 					&& traf_excess * this.excessPrice + this.price < next_plan.price) {
 				result = traf_excess * this.excessPrice + this.price;
-				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice));
+				 
+				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice) 
+					, (cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '' );
 				return false;
 			}
 			else {
 				result = traf_excess * this.excessPrice + this.price;
-				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)); 
+				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice)
+				, (cdn_name == 'MaxCDN') ? ' <span id="recommended">Recommended</span>' : '' ); 
 			}
 		}
 		last_excessPrice = this.excessPrice;
