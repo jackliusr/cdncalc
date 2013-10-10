@@ -242,13 +242,13 @@ var
 			var  note = '', total = 0;
 			total = calculate_total();
 			var matrix = [
-		{traffic:   10000, prices:[{continents: ['US','EU'],price: 0.12},{continents:['AU'],price: 0.19}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic:   40000, prices:[{continents: ['US','EU'],price: 0.08},{continents:['AU'],price: 0.14}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic:  100000, prices:[{continents: ['US','EU'],price: 0.06},{continents:['AU'],price: 0.12}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic:  350000, prices:[{continents: ['US','EU'],price: 0.04},{continents:['AU'],price: 0.10}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic:  500000, prices:[{continents: ['US','EU'],price: 0.03},{continents:['AU'],price:0.095}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic: 4000000, prices:[{continents: ['US','EU'],price:0.025},{continents:['AU'],price: 0.09}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
-		{traffic:      -1, prices:[{continents: ['US','EU'],price: 0.02},{continents:['AU'],price:0.085}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:   10000,prices:[{continents:['US','EU'],price: 0.12},{continents:['AU'],price: 0.19}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:   40000,prices:[{continents:['US','EU'],price: 0.08},{continents:['AU'],price: 0.14}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  100000,prices:[{continents:['US','EU'],price: 0.06},{continents:['AU'],price: 0.12}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  350000,prices:[{continents:['US','EU'],price: 0.04},{continents:['AU'],price: 0.10}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:  500000,prices:[{continents:['US','EU'],price: 0.03},{continents:['AU'],price:0.095}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic: 4000000,prices:[{continents:['US','EU'],price:0.025},{continents:['AU'],price: 0.09}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
+		{traffic:      -1,prices:[{continents:['US','EU'],price: 0.02},{continents:['AU'],price:0.085}],requests:[{continents:['US'],price: 0.0075,price_s:0.01},{continents:['AU','EU'],price:0.009,price_s:0.012}]},
 			];
 			
 			$.each(matrix, function (index) {
@@ -326,7 +326,7 @@ function recalculate() {
 	$("#traffic_volume").val($("#traffic_volume").val().replace(/\D+/g,''));
 
 	if ($('#traffic_info').find(':animated').length > 0) {
-		var to = window.setTimeout(function () {recalculate();}, 50);	
+		var to = window.setTimeout(function () {recalculate();}, 300);	
 		return;
 	}
 	if ( $("#traffic_volume").val() >= 0) {
