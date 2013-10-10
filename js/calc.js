@@ -344,7 +344,7 @@ $(document).ready( function(){
 	$("input").change(function(){
 		recalculate();
 	});
-		recalculate();
+	//	recalculate();
 	
 });
 
