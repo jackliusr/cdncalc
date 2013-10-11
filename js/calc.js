@@ -10,7 +10,7 @@ function max_and_cachefly(trange, cdn_name) {
 	var traf = $("#traffic_volume").val();
 	var result = 0;
 	var last_excessPrice = 0;
-	var recomm_html = ' <span id="recommended">Recommended!</span> <span id="coupon">discount -20%</span>';
+	var recomm_html = ' <span id="recommended">Recommended!</span> <span id="coupon">discount -25%</span>';
 	$.each(trange, function(index) {
 		if (traf <= this.included) {
 			result = this.price * 0.8;
@@ -78,10 +78,10 @@ var
 		
 		MaxCDN: function () {
 			var trange = [ 
-				{name:'#!/bin/start', price:   9, included:   100, excessPrice: 0.08 },
-				{name:'./plus',       price:  39, included:   500, excessPrice: 0.07 }, 
-				{name:'./business',   price:  79, included:  1000, excessPrice: 0.06 },
-				{name:'./premium',    price: 499, included: 10000, excessPrice: 0.05 } ];
+				{name:'#!/bin/start', price:6.75, included:   100, excessPrice: 0.08 },
+				{name:'./plus',       price:29.25, included:   500, excessPrice: 0.07 }, 
+				{name:'./business',   price:59.25, included:  1000, excessPrice: 0.06 },
+				{name:'./premium',    price:374.25, included: 10000, excessPrice: 0.05 } ];
 			max_and_cachefly(trange, "MaxCDN");
 		},
 		
