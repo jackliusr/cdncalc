@@ -13,7 +13,7 @@ function max_and_cachefly(trange, cdn_name) {
 	var recomm_html = ' <span id="recommended">Recommended!</span> <span id="coupon">discount -25%</span>';
 	$.each(trange, function(index) {
 		if (traf <= this.included) {
-			result = this.price * 0.8;
+			result = this.price ;
 			$("#traffic_info tr:contains("+cdn_name+") td").eq(3).html(this.name + ((cdn_name == 'MaxCDN') ? recomm_html : '') );
 			return false;
 		}
@@ -24,7 +24,7 @@ function max_and_cachefly(trange, cdn_name) {
 			if (typeof next_plan !== "undefined" 
 					&& traf < next_plan.included 
 					&& traf_excess * this.excessPrice + this.price < next_plan.price) {
-				result = traf_excess * this.excessPrice + this.price * 0.8;
+				result = traf_excess * this.excessPrice + this.price ;
 				 
 				show_cdn_plan_notes(cdn_name,this.name,Math.round(traf_excess * this.excessPrice) 
 					, (cdn_name == 'MaxCDN') ? recomm_html : '' );
